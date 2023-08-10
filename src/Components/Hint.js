@@ -1,13 +1,20 @@
-// Hint.js
 import React from 'react';
 import 'tailwindcss/tailwind.css';
 
-const Hint = ({ nationality, position }) => {
+const Hint = ({ nationality, position, club }) => {
   return (
-    <div className='font-semibold text-lg flex justify-center pb-4'>
-      <p className='mr-5'>Nationality: {nationality}</p>
-      <p>Position: {position}</p>
-      {/* Display the correct footballer name */}
+    <div className='font-semibold text-lg pb-4'>
+       <p className='mr-5'>
+        <span className='text-blue-500 font-semibold'>Team:</span> {club}
+      </p>
+      <p className='mr-5'>
+        <span className='text-blue-500 font-semibold'>Position:</span> {position}
+      </p>
+      <p className='mr-5'>
+        <span className='text-blue-500 font-semibold'>Nationality:</span> {nationality}
+      </p>
+     
+     
     </div>
   );
 };

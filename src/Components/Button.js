@@ -13,7 +13,7 @@ const Button = ({ name, correctAnswer, handleAnswer, setAnswerCorrect }) => {
         handleAnswer(isCorrectAnswer);
         setAnswerCorrect(isCorrectAnswer);
         setSelected(false);
-      }, 1000); // Wait for 1 second and then move to the next question
+      }, 800); // Wait for 1 second and then move to the next question
     }
   }, [isSelected, name, correctAnswer, handleAnswer, setAnswerCorrect]);
 
@@ -24,6 +24,9 @@ const Button = ({ name, correctAnswer, handleAnswer, setAnswerCorrect }) => {
   const buttonClass = `bg-blue-500 text-white px-4 py-2 rounded transition-colors duration-300 hover:bg-blue-600 ${
     isSelected ? (isCorrect ? 'bg-green-500' : 'bg-red-500') : ''
   }`;
+
+  
+
 
   return (
     <div>

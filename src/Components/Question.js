@@ -1,68 +1,65 @@
 // Question.js
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import 'tailwindcss/tailwind.css';
 import Hint from './Hint';
 import Button from './Button';
 import Score from './Score';
+import useFootballerButtons from '../Hooks/useFootballerButtons';
+import useTimer from '../Hooks/useTimer';
 
 const Question = ({ questionData, handleAnswer, footballersData, selectedLeague, answerCorrect, setAnswerCorrect }) => {
-  const { name, nationality, position } = questionData;
-  const [correctFootballer, setCorrectFootballer] = useState(null);
-  const [footballerButtons, setFootballerButtons] = useState([]);
+  const { correctFootballer, footballerButtons } = useFootballerButtons(footballersData, selectedLeague, questionData);
   const [score, setScore] = useState(0);
+  const [gameOver, setGameOver] = useState(false);
 
-  useEffect(() => {
-    generateFootballerButtons();
-  }, [questionData, selectedLeague]);
-
-  const generateFootballerButtons = () => {
-    const filteredFootballersData = footballersData.filter((footballer) => footballer.league === selectedLeague);
-    const randomIndex = Math.floor(Math.random() * filteredFootballersData.length);
-    const correctFootballer = filteredFootballersData[randomIndex];
-    const shuffledFootballers = filteredFootballersData
-      .filter(
-        (footballer) =>
-          footballer.name !== questionData.name &&
-          footballer.name !== correctFootballer.name
-      )
-      .sort(() => Math.random() - 0.5);
-    const selectedFootballers = [correctFootballer, ...shuffledFootballers.slice(0, 3)];
-    const randomisedSelectedFootballers = shuffleArray(selectedFootballers);
-    setCorrectFootballer(correctFootballer);
-    setFootballerButtons(randomisedSelectedFootballers);
-    setScore(0); // Reset score when generating new buttons
-    setAnswerCorrect(false); // Reset answerCorrect when generating new buttons
+  // This function will be called when the timer finishes
+  const handleTimerFinish = () => {
+    setGameOver(true);
   };
 
-  const shuffleArray = (array) => {
-    const shuffledArray = [...array];
-    shuffledArray.sort(() => Math.random() - 0.5);
-    return shuffledArray;
-  };
+  // useTimer hook will handle the timer and call the handleTimerFinish function when it's done
+  const secondsLeft = useTimer(30, handleTimerFinish);
 
-  return (
-    <div className="flex flex-col items-center p-10">
-      {correctFootballer && (
-        <Hint
-          nationality={correctFootballer.nationality}
-          position={correctFootballer.position}
-        />
-      )}
-      <div className="grid grid-cols-2 gap-4">
-        {footballerButtons.map((footballer, index) => (
-          <Button
-            key={index}
-            name={footballer.name}
-            correctAnswer={correctFootballer.name}
-            setScore={setScore}
-            score={score}
-            handleAnswer={handleAnswer}
-            setAnswerCorrect={setAnswerCorrect}
+  const renderGame = () => {
+    if (gameOver) {
+      return (
+        <div className="flex flex-col items-center">
+          <h2 className="text-3xl p-5">Game Over!</h2>
+          <p className="text-3xl p-5">You scored: {score}</p>
+          {/* Implement your restart game logic */}
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex flex-col items-center p-10">
+        {correctFootballer && (
+          <Hint
+            nationality={correctFootballer.nationality}
+            position={correctFootballer.position}
+            club={correctFootballer.club}
           />
-        ))}
+        )}
+        <div className="grid grid-cols-2 gap-4">
+          {footballerButtons.map((footballer, index) => (
+            <Button
+              key={index}
+              name={footballer.name}
+              correctAnswer={correctFootballer.name}
+              setScore={setScore}
+              score={score}
+              handleAnswer={handleAnswer}
+              setAnswerCorrect={setAnswerCorrect}
+            />
+          ))}
+        {/* <ScorePopup score={score} /> Render the ScorePopup component */}
+
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
+
+  return <div>{renderGame()}</div>;
 };
 
 export default Question;

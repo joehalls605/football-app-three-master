@@ -3,7 +3,6 @@ import footballersData from './Data/FootballerData';
 import Question from './Components/Question';
 import Timer from './Components/Timer';
 import Homepage from './Pages/Homepage';
-import checkMarkIcon from './Icons/check-mark.png';
 import Score from './Components/Score';
 
 const App = () => {
@@ -44,13 +43,13 @@ const App = () => {
     if (gameOver) {
       return (
         <div className="flex flex-col items-center">
-          <h2 className="text-3xl p-4">Game Over!</h2>
-          <p className="text-3xl p-4">Your score: {score}</p>
+          <h2 className="text-3xl p-5">Game Over!</h2>
+          <p className="text-3xl p-5">You scored: {score}</p>
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded transition-colors duration-300 hover:bg-blue-600"
             onClick={restartGame}
           >
-            Restart
+            Try again
           </button>
         </div>
       );
@@ -77,11 +76,7 @@ const App = () => {
         />
         {answerCorrect && (
           <div className='flex flex-col items-center'>
-            <img
-              src={checkMarkIcon}
-              alt="Correct"
-              className="w-4 h-4 inline-block ml-2"
-            />
+        
           </div>
         )}
         <Score score={score}/>
