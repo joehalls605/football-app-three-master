@@ -32,7 +32,8 @@ const Question = ({ questionData, handleAnswer, footballersData, selectedLeague,
     }
 
     return (
-      <div className="flex flex-col items-center p-10">
+      <div>
+      <div className="flex flex-col items-center">
         {correctFootballer && (
           <Hint
             nationality={correctFootballer.nationality}
@@ -40,7 +41,7 @@ const Question = ({ questionData, handleAnswer, footballersData, selectedLeague,
             club={correctFootballer.club}
           />
         )}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4 p-4">
           {footballerButtons.map((footballer, index) => (
             <Button
               key={index}
@@ -55,6 +56,7 @@ const Question = ({ questionData, handleAnswer, footballersData, selectedLeague,
         {/* <ScorePopup score={score} /> Render the ScorePopup component */}
 
         </div>
+      </div>
       </div>
     );
   };

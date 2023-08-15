@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import footballersData from './Data/FootballerData';
+import { GameProvider } from './Context/GameContext'; // Import the GameProvider
+
 import Question from './Components/Question';
 import Timer from './Components/Timer';
 import Homepage from './Pages/Homepage';
@@ -66,21 +68,25 @@ const App = () => {
 
     return (
       <div>
-        <Question
-          questionData={currentQuestion}
-          handleAnswer={handleAnswer}
-          footballersData={filteredFootballersData}
-          selectedLeague={selectedLeague}
-          answerCorrect={answerCorrect}
-          setAnswerCorrect={setAnswerCorrect}
-        />
-        {answerCorrect && (
-          <div className='flex flex-col items-center'>
-        
-          </div>
-        )}
-        <Score score={score}/>
-        <Timer setGameOver={setGameOver} gameOver={gameOver} />
+        {/* Wrap your renderGame content with GameProvider */}
+        <GameProvider>
+          {/* Pass down the currentQuestionIndex and score as props */}
+          <Question
+            questionData={currentQuestion}
+            handleAnswer={handleAnswer}
+            footballersData={filteredFootballersData}
+            selectedLeague={selectedLeague}
+            answerCorrect={answerCorrect}
+            setAnswerCorrect={setAnswerCorrect}
+          />
+          {answerCorrect && (
+            <div className='flex flex-col items-center'>
+              {/* Content for when the answer is correct */}
+            </div>
+          )}
+          <Score score={score} />
+          <Timer setGameOver={setGameOver} gameOver={gameOver} />
+        </GameProvider>
       </div>
     );
   };
